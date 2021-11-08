@@ -1,0 +1,24 @@
+﻿@page "/photos"
+@inject IMarsRoverPhoto _marsRoverPhoto;
+
+<PageTitle>Rover Photos</PageTitle>
+
+<h1>Mars Rover Photos</h1>
+
+@if (response != null)
+{
+    @foreach (var item in response.Photos)
+    {
+        <img src=@item.Img_src />
+    }
+}
+
+
+@code {
+    MarsRoverPhoto.Response? response;
+    protected override async Task OnInitializedAsync()
+    {
+        response = await _marsRoverPhoto.GetRoverPhotos();
+    }
+}
+
