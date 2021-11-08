@@ -1,8 +1,7 @@
 ﻿@page "/photos"
-@inject IConfiguration _config;
+@inject IMarsRoverPhoto _marsRoverPhoto;
 
 <PageTitle>Rover Photos</PageTitle>
-
 
 <h1>Mars Rover Photos</h1>
 
@@ -16,50 +15,10 @@
 
 
 @code {
-    Response response;
+    MarsRoverPhoto.Response? response;
     protected override async Task OnInitializedAsync()
     {
-        HttpClient client = new HttpClient();
-        string url = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=800&api_key=" + _config["NASA_API_KEY"];
-
-        HttpResponseMessage HTTPresponse = await client.GetAsync(url);
-        if (HTTPresponse.IsSuccessStatusCode)
-        {
-            response = await HTTPresponse.Content.ReadFromJsonAsync<Response>();
-        }
-    }
-
-    public class Response
-    {
-        public Photos[] Photos { get; set; }
-    }
-
-    public class Rover
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Landing_date { get; set; }
-        public string Launch_date { get; set; }
-        public string Status { get; set; }
-    }
-
-    public class Camera
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Rover_id { get; set; }
-        public string Full_name { get; set; }
-    }
-
-    public class Photos
-    {
-        public int Id { get; set; }
-        public int Sol { get; set; }
-        public Camera Camera { get; set; }
-        public string Img_src { get; set; }
-        public string Earth_date { get; set; }
-        public Rover Rover { get; set; }
-
+        response = await _marsRoverPhoto.GetRoverPhotos();
     }
 }
 
