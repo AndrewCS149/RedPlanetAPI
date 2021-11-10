@@ -4,6 +4,6 @@ namespace RedPlanetAPI.Interfaces
 {
     public interface IMarsRoverPhoto
     {
-        Task<MarsRoverPhoto.Response> GetRoverPhotos();
+        Task<MarsRoverPhoto.Response> GetRoverPhotos(MarsRoverPhoto.Params? urlParams);
     }
 }

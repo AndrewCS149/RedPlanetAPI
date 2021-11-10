@@ -2,11 +2,33 @@
 @inject IMarsRoverPhoto _marsRoverPhoto;
 
 <PageTitle>Rover Photos</PageTitle>
-
 <h1>Mars Rover Photos</h1>
+
+<div style="position: fixed; top: 0px">
+    <select @onchange=@OnCameraChange>
+        <option value="all">All</option>
+        <option value="FHAZ">Front Hazard Avoidance Camera</option>
+        <option value="RHAZ">Rear Hazard Avoidance Camera</option>
+        <option value="MAST">Mast Camera</option>
+        <option value="CHEMCAM">Chemistry and Camera Complex</option>
+        <option value="MAHLI">Mars Hand Lens Imager</option>
+        <option value="MARDI">Mars Descent Imager</option>
+        <option value="NAVCAM">Naviation Camera</option>
+        <option value="PANCAM">Panoramic Camera</option>
+        <option value="MINITES">Miniature Thermal Emission Spectrometer</option>
+    </select>
+
+    <label for="solNumber">Sol</label>
+    <input @onchange=@OnSolChange type="number" id="solNumber" name="sol" min="1" />
+
+</div>
 
 @if (response != null)
 {
+    @if(response.Photos.Length == 0)
+    {
+        <h1>No images</h1>
+    }
     @foreach (var item in response.Photos)
     {
         <img src=@item.Img_src />
@@ -16,9 +38,27 @@
 
 @code {
     MarsRoverPhoto.Response? response;
+    string value;
+    MarsRoverPhoto.Params urlParams;
+
     protected override async Task OnInitializedAsync()
     {
-        response = await _marsRoverPhoto.GetRoverPhotos();
+        urlParams = new MarsRoverPhoto.Params();
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+    }
+
+    private async Task OnSolChange(ChangeEventArgs e)
+    {
+        string val = e.Value.ToString();
+        urlParams.Sol = val == "0" ? null : $"&sol={val}";
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+    }
+
+    private async Task OnCameraChange(ChangeEventArgs e)
+    {
+        string val = e.Value.ToString();
+        urlParams.Camera = val == "all" ? null : $"&camera={val}";
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
     }
 }
 

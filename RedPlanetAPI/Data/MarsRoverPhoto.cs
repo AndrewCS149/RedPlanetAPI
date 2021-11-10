@@ -2,6 +2,16 @@
 {
     public class MarsRoverPhoto
     {
+        public class Params
+        {
+            public Params()
+            {
+                Sol = "&sol=1";
+            }
+            public string? Sol { get; set; }
+            public string? Camera { get; set; }
+        }
+
         public class Response
         {
             public Photos[]? Photos { get; set; }
