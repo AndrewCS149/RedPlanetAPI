@@ -5,6 +5,12 @@
 <h1>Mars Rover Photos</h1>
 
 <div style="position: fixed; top: 0px">
+    <select @onchange=@OnRoverChange>
+        <option value="curiosity">Curiosity</option>
+        <option value="opportunity">Opportunity</option>
+        <option value="spirit">Spirit</option>
+    </select>
+
     <select @onchange=@OnCameraChange>
         <option value="all">All</option>
         <option value="FHAZ">Front Hazard Avoidance Camera</option>
@@ -45,6 +51,14 @@
     {
         urlParams = new MarsRoverPhoto.Params();
         response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+    }
+
+    private async Task OnRoverChange(ChangeEventArgs e)
+    {
+        string val = e.Value.ToString();
+        urlParams.RoverName = val;
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+
     }
 
     private async Task OnSolChange(ChangeEventArgs e)
