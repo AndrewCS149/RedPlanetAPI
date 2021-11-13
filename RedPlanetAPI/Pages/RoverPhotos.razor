@@ -41,15 +41,24 @@
 }
 </section>
 
+<span>
+    @if(manifest != null)
+    {
+        <p>@manifest</p>
+    }
+</span>
+
 
 @code {
     MarsRoverPhoto.Response? response;
     MarsRoverPhoto.Params urlParams;
+    MarsRoverManifest.Response manifest;
 
     protected override async Task OnInitializedAsync()
     {
         urlParams = new MarsRoverPhoto.Params();
         response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+        manifest = await _marsRoverPhoto.GetMarsRoverManifest(urlParams.RoverName);
     }
 
     private async Task OnRoverChange(ChangeEventArgs e)
