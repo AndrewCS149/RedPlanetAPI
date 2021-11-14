@@ -30,27 +30,7 @@
 <!-- Mission Manifest -->
 @if(manifest != null)
 {
-<section manifest>
-    <div id="manifest">
-        <div>
-            <p>Rover: </p>
-            <p>Status:</p>
-            <p>Launch Date: </p>
-            <p>Landing Date:</p>
-            <p>Max Sol: </p>
-            <p>Photos Taken: </p>
-        </div>
-        <div>
-            <p>@manifest.Rover.Name</p>
-            <p>@manifest.Rover.Status</p>
-            <p>@manifest.Rover.Launch_date</p>
-            <p>@manifest.Rover.Landing_date</p>
-            <p>@manifest.Rover.Max_sol</p>
-            <p>@manifest.Rover.Total_photos</p>
-        </div>
-    </div>
-    <button @onclick=@ToggleManifestVisibility>Hide Manifest</button>
-</section>
+    <Manifest manifest=@manifest></Manifest>
 }
 
 <!-- Photos -->
@@ -79,11 +59,6 @@
         urlParams = new MarsRoverPhoto.Params();
         response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
         manifest = await _marsRoverPhoto.GetMarsRoverManifest(urlParams.RoverName);
-    }
-
-    private void ToggleManifestVisibility()
-    {
-        JSruntime.InvokeVoidAsync("toggleManifestVisiblity");
     }
 
     private async Task OnRoverChange(ChangeEventArgs e)
