@@ -5,27 +5,33 @@
 <PageTitle>Rover Photos</PageTitle>
 
 <!-- Search Filter -->
-<div filter>
-    <select @onchange=@OnRoverChange>
-        <option value="curiosity">Curiosity</option>
-        <option value="opportunity">Opportunity</option>
-        <option value="spirit">Spirit</option>
-    </select>
+<section filter>
+    <div>
+        <label for="rover">Rover</label>
+        <label for="camera">Camera</label>
+        <label for="solNumber">Sol</label>
+    </div>
 
-    <select @onchange=@OnCameraChange>
-        <option value="all">All</option>
-        @if(manifest != null)
-        {
-            @foreach(var cam in manifest.Rover.Cameras)
+    <div>
+        <select id="rover" @onchange=@OnRoverChange>
+            <option value="curiosity">Curiosity</option>
+            <option value="opportunity">Opportunity</option>
+            <option value="spirit">Spirit</option>
+        </select>
+
+        <select id="camera" @onchange=@OnCameraChange>
+            <option value="all">All</option>
+            @if(manifest != null)
             {
-                <option value=@cam.Name>@cam.Full_name</option>
+                @foreach(var cam in manifest.Rover.Cameras)
+                {
+                    <option value=@cam.Name>@cam.Full_name</option>
+                }
             }
-        }
-    </select>
-
-    <label for="solNumber">Sol</label>
-    <input @onchange=@OnSolChange placeholder="1" type="number" id="solNumber" name="sol" min="1" />
-</div>
+        </select>
+        <input @onchange=@OnSolChange placeholder="1" type="number" id="solNumber" name="sol" min="1" />
+    </div>
+</section>
 
 <!-- Mission Manifest -->
 @if(manifest != null)

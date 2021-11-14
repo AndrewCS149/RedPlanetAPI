@@ -1,14 +1,29 @@
 ﻿/*Search Filter*/
-div[filter] {
+section[filter] {
     position: fixed;
     top: 0px;
     padding: 10px;
+    width: 100%;
+    background-color: #626060;
+    display: flex;
+}
+
+section[filter] label,
+section[filter] select,
+section[filter] input {
+    display: block;
+    padding: 0px 10px;
+}
+
+section[filter] select,
+section[filter] input {
+    width: 100px;
     background-color: white;
 }
 
 /*Photos*/
 section[photos] {
-    margin: 40px 0px;
+    margin: 80px 0px;
     text-align: center;
 }
 
