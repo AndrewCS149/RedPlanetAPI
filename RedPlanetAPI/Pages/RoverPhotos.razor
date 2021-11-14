@@ -1,6 +1,5 @@
 ﻿@page "/photos"
 @inject IMarsRoverPhoto _marsRoverPhoto;
-@inject IJSRuntime JSruntime;
 
 <PageTitle>Rover Photos</PageTitle>
 
@@ -34,25 +33,10 @@
 </section>
 
 <!-- Mission Manifest -->
-@if(manifest != null)
-{
-    <Manifest manifest=@manifest></Manifest>
-}
+<Manifest manifest=@manifest></Manifest>
 
 <!-- Photos -->
-<section photos>
-@if (response != null)
-{
-    @if(response.Photos.Length == 0)
-    {
-        <h1>No images</h1>
-    }
-    @foreach (var item in response.Photos)
-    {
-        <img src=@item.Img_src />
-    }
-}
-</section>
+<Photos response=@response></Photos>
 
 @code {
     MarsRoverPhoto.Response? response;
