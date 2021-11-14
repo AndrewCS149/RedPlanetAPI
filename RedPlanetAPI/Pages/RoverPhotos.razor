@@ -1,9 +1,11 @@
 ﻿@page "/photos"
 @inject IMarsRoverPhoto _marsRoverPhoto;
+@inject IJSRuntime JSruntime;
 
 <PageTitle>Rover Photos</PageTitle>
 
-<div>
+<!-- Search Filter -->
+<div filter>
     <select @onchange=@OnRoverChange>
         <option value="curiosity">Curiosity</option>
         <option value="opportunity">Opportunity</option>
@@ -12,22 +14,47 @@
 
     <select @onchange=@OnCameraChange>
         <option value="all">All</option>
-        <option value="FHAZ">Front Hazard Avoidance Camera</option>
-        <option value="RHAZ">Rear Hazard Avoidance Camera</option>
-        <option value="MAST">Mast Camera</option>
-        <option value="CHEMCAM">Chemistry and Camera Complex</option>
-        <option value="MAHLI">Mars Hand Lens Imager</option>
-        <option value="MARDI">Mars Descent Imager</option>
-        <option value="NAVCAM">Naviation Camera</option>
-        <option value="PANCAM">Panoramic Camera</option>
-        <option value="MINITES">Miniature Thermal Emission Spectrometer</option>
+        @if(manifest != null)
+        {
+            @foreach(var cam in manifest.Rover.Cameras)
+            {
+                <option value=@cam.Name>@cam.Full_name</option>
+            }
+        }
     </select>
 
     <label for="solNumber">Sol</label>
-    <input @onchange=@OnSolChange type="number" id="solNumber" name="sol" min="1" />
+    <input @onchange=@OnSolChange placeholder="1" type="number" id="solNumber" name="sol" min="1" />
 </div>
 
-<section>
+<!-- Mission Manifest -->
+@if(manifest != null)
+{
+<section manifest>
+    <div id="manifest">
+        <div>
+            <p>Rover: </p>
+            <p>Status:</p>
+            <p>Launch Date: </p>
+            <p>Landing Date:</p>
+            <p>Max Sol: </p>
+            <p>Photos Taken: </p>
+        </div>
+        <div>
+            <p>@manifest.Rover.Name</p>
+            <p>@manifest.Rover.Status</p>
+            <p>@manifest.Rover.Launch_date</p>
+            <p>@manifest.Rover.Landing_date</p>
+            <p>@manifest.Rover.Max_sol</p>
+            <p>@manifest.Rover.Total_photos</p>
+        </div>
+    </div>
+    <button @onclick=@ToggleManifestVisibility>Hide Manifest</button>
+</section>
+}
+
+<!-- Photos -->
+<section photos>
 @if (response != null)
 {
     @if(response.Photos.Length == 0)
@@ -41,18 +68,11 @@
 }
 </section>
 
-<span>
-    @if(manifest != null)
-    {
-        <p>@manifest</p>
-    }
-</span>
-
-
 @code {
     MarsRoverPhoto.Response? response;
     MarsRoverPhoto.Params urlParams;
     MarsRoverManifest.Response manifest;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,12 +81,17 @@
         manifest = await _marsRoverPhoto.GetMarsRoverManifest(urlParams.RoverName);
     }
 
+    private void ToggleManifestVisibility()
+    {
+        JSruntime.InvokeVoidAsync("toggleManifestVisiblity");
+    }
+
     private async Task OnRoverChange(ChangeEventArgs e)
     {
         string val = e.Value.ToString();
         urlParams.RoverName = val;
         response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
-
+        manifest = await _marsRoverPhoto.GetMarsRoverManifest(urlParams.RoverName);
     }
 
     private async Task OnSolChange(ChangeEventArgs e)
