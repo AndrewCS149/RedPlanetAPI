@@ -2,35 +2,27 @@
 {
     public class MarsRoverPhoto
     {
+        public class Params
+        {
+            public string? Sol { get; set; }
+            public string? Camera { get; set; }
+            public string? RoverName { get; set; }
+            public Params()
+            {
+                Sol = "&sol=1";
+                RoverName = "curiosity";
+            }
+        }
+
         public class Response
         {
             public Photos[]? Photos { get; set; }
         }
-        public class Rover
-        {
-            public int Id { get; set; }
-            public string? Name { get; set; }
-            public string? Landing_date { get; set; }
-            public string? Launch_date { get; set; }
-            public string? Status { get; set; }
-        }
-
-        public class Camera
-        {
-            public int Id { get; set; }
-            public string? Name { get; set; }
-            public int Rover_id { get; set; }
-            public string? Full_name { get; set; }
-        }
 
         public class Photos
         {
-            public int Id { get; set; }
             public int Sol { get; set; }
-            public Camera? Camera { get; set; }
             public string? Img_src { get; set; }
-            public string? Earth_date { get; set; }
-            public Rover? Rover { get; set; }
         }
     }
 }
