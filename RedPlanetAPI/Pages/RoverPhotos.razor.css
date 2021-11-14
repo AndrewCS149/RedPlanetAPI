@@ -6,23 +6,6 @@ div[filter] {
     background-color: white;
 }
 
-/*Mission Manifest*/
-section[manifest] {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    background-color: #9D9D9D;
-    opacity: .7;
-}
-
-section[manifest] > div {
-    display: flex;
-}
-
-section[manifest] > div div{
-    padding: 20px;
-}
-
 /*Photos*/
 section[photos] {
     margin: 40px 0px;
