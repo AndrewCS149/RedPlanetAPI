@@ -1,23 +1,33 @@
 section {
-    position: fixed;
-    bottom: 20px;
-    left: 44%;
+    bottom: 0px;
     background-color: #9D9D9D;
     opacity: .7;
+    border-radius: 20px 20px 0px 0px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#manifest {
+    border-radius: 20px 20px 0px 0px;
 }
 
 section > div {
     display: flex;
 }
 
-section > div div {
-    padding: 20px;
-}
+    section > div div {
+        padding: 20px;
+        border-radius: 20px 20px 0px 0px;
+    }
 
 button {
+    width: 250px;
     padding: 10px;
+    border-radius: 20px 20px 0px 0px;
 }
 
-button:hover {
-
-}
+    button:hover {
+        background-color: #bf5b1f;
+        cursor: pointer;
+    }
