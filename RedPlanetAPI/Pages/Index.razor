@@ -1,5 +1,76 @@
 ﻿@page "/"
+@inject IMarsRoverPhoto _marsRoverPhoto;
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Rover Photos</PageTitle>
 
-<p>Welcome to your Red Planet API app.</p>
+<!-- Search Filter -->
+<section filter>
+    <div>
+        <label for="rover">Rover</label>
+        <label for="camera">Camera</label>
+        <label for="solNumber">Sol</label>
+    </div>
+
+    <div>
+        <select id="rover" @onchange=@OnRoverChange>
+            <option value="curiosity">Curiosity</option>
+            <option value="opportunity">Opportunity</option>
+            <option value="spirit">Spirit</option>
+        </select>
+
+        <select id="camera" @onchange=@OnCameraChange>
+            <option value="all">All</option>
+            @if(manifest != null)
+            {
+                @foreach(var cam in manifest.Rover.Cameras)
+                {
+                    <option value=@cam.Name>@cam.Full_name</option>
+                }
+            }
+        </select>
+        <input @onchange=@OnSolChange placeholder="1" type="number" id="solNumber" name="sol" min="1" />
+    </div>
+</section>
+
+<!-- Mission Manifest -->
+<Manifest manifest=@manifest></Manifest>
+
+<!-- Photos -->
+<Photos response=@response></Photos>
+
+@code {
+    MarsRoverPhoto.Response? response;
+    MarsRoverPhoto.Params urlParams;
+    MarsRoverManifest.Response manifest;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        urlParams = new MarsRoverPhoto.Params();
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+        manifest = await _marsRoverPhoto.GetMarsRoverManifest(urlParams.RoverName);
+    }
+
+    private async Task OnRoverChange(ChangeEventArgs e)
+    {
+        string val = e.Value.ToString();
+        urlParams.RoverName = val;
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+        manifest = await _marsRoverPhoto.GetMarsRoverManifest(urlParams.RoverName);
+    }
+
+    private async Task OnSolChange(ChangeEventArgs e)
+    {
+        string val = e.Value.ToString();
+        urlParams.Sol = val == "0" ? null : $"&sol={val}";
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+    }
+
+    private async Task OnCameraChange(ChangeEventArgs e)
+    {
+        string val = e.Value.ToString();
+        urlParams.Camera = val == "all" ? null : $"&camera={val}";
+        response = await _marsRoverPhoto.GetRoverPhotos(urlParams);
+    }
+}
+
