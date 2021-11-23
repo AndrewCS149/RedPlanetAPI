@@ -1,4 +1,8 @@
-﻿main {
+﻿body {
+    background-color: #313131;
+}
+
+main {
     margin: 0px auto 0px auto;
     width: 1080px;
 }
