@@ -6,6 +6,8 @@ section {
 
 img {
     max-width: 1080px;
+    border: 2px solid #414141;
+    margin: 2.5px 0px;
 }
 
 
